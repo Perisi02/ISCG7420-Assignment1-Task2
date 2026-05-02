@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
@@ -25,8 +24,11 @@ SECRET_KEY = 'django-insecure-jm2y(krlfhf*s9v#7u@)_u%u&1tlt%2cf*t$#4mc$rdk1qlx0-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "vercel.app"]
-
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    ".vercel.app",
+    "iscg-7420-assignment1-task2.vercel.app"]
 
 # Application definition
 
@@ -70,7 +72,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'appointment_system.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
@@ -80,7 +81,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -100,7 +100,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
@@ -112,7 +111,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
@@ -122,3 +120,8 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 LOGIN_REDIRECT_URL = "appointment:home"
 LOGOUT_REDIRECT_URL = "appointment:home"
 LOGIN_URL = "login"
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://iscg-7420-assignment1-task2.vercel.app",
+    "https://*.vercel.app",
+]
