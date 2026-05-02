@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Appointment, Doctor
+from .models import Appointment, Doctor, AppointmentSlot
 
 
 class AppointmentForm(forms.ModelForm):
@@ -63,6 +63,31 @@ class DoctorForm(forms.ModelForm):
                 "placeholder": "Enter doctor bio"
             }),
             "is_active": forms.CheckboxInput(attrs={
+                "class": "form-check-input"
+            }),
+        }
+
+class AppointmentSlotForm(forms.ModelForm):
+    class Meta:
+        model = AppointmentSlot
+        fields = ["doctor", "date", "start_time", "end_time", "is_available"]
+        widgets = {
+            "doctor": forms.Select(attrs={
+                "class": "form-control"
+            }),
+            "date": forms.DateInput(attrs={
+                "class": "form-control",
+                "type": "date"
+            }),
+            "start_time": forms.TimeInput(attrs={
+                "class": "form-control",
+                "type": "time"
+            }),
+            "end_time": forms.TimeInput(attrs={
+                "class": "form-control",
+                "type": "time"
+            }),
+            "is_available": forms.CheckboxInput(attrs={
                 "class": "form-check-input"
             }),
         }

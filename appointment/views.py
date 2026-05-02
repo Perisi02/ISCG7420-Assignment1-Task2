@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
 
 from .models import Doctor, AppointmentSlot, Appointment
-from .forms import AppointmentForm, PatientRegistrationForm, DoctorForm
+from .forms import AppointmentForm, PatientRegistrationForm, DoctorForm, AppointmentSlotForm
 
 
 # Create your views here.
@@ -209,4 +209,64 @@ def delete_doctor(request, doctor_id):
 
     return render(request, "appointment/delete_doctor.html", {
         "doctor": doctor
+    })
+
+@user_passes_test(staff_required)
+def manage_slots(request):
+    slots = AppointmentSlot.objects.select_related("doctor").order_by("date", "start_time")
+
+    return render(request, "appointment/manage_slots.html", {
+        "slots": slots
+    })
+
+
+@user_passes_test(staff_required)
+def add_slot(request):
+    if request.method == "POST":
+        form = AppointmentSlotForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Appointment slot has been added.")
+            return redirect("appointment:manage_slots")
+    else:
+        form = AppointmentSlotForm()
+
+    return render(request, "appointment/slot_form.html", {
+        "form": form,
+        "title": "Add Appointment Slot"
+    })
+
+
+@user_passes_test(staff_required)
+def edit_slot(request, slot_id):
+    slot = get_object_or_404(AppointmentSlot, id=slot_id)
+
+    if request.method == "POST":
+        form = AppointmentSlotForm(request.POST, instance=slot)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Appointment slot has been updated.")
+            return redirect("appointment:manage_slots")
+    else:
+        form = AppointmentSlotForm(instance=slot)
+
+    return render(request, "appointment/slot_form.html", {
+        "form": form,
+        "title": "Edit Appointment Slot"
+    })
+
+
+@user_passes_test(staff_required)
+def delete_slot(request, slot_id):
+    slot = get_object_or_404(AppointmentSlot, id=slot_id)
+
+    if request.method == "POST":
+        slot.delete()
+        messages.success(request, "Appointment slot has been deleted.")
+        return redirect("appointment:manage_slots")
+
+    return render(request, "appointment/delete_slot.html", {
+        "slot": slot
     })

@@ -1,0 +1,73 @@
+{% extends "appointment/base.html" %}
+
+{% block title %}
+    Manage Appointment Slots | Piki Ora Medical Centre
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Manage Appointment Slots</h1>
+
+    <a href="{% url 'appointment:add_slot' %}" class="btn btn-primary">
+        Add Slot
+    </a>
+</div>
+
+{% if slots %}
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Doctor</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Available</th>
+                <th>Booked</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for slot in slots %}
+            <tr>
+                <td>Dr {{ slot.doctor.name }}</td>
+                <td>{{ slot.date }}</td>
+                <td>{{ slot.start_time }} - {{ slot.end_time }}</td>
+                <td>
+                    {% if slot.is_available %}
+                        <span class="badge bg-success">Yes</span>
+                    {% else %}
+                        <span class="badge bg-secondary">No</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if slot.appointment %}
+                        <span class="badge bg-warning text-dark">Booked</span>
+                    {% else %}
+                        <span class="badge bg-info text-dark">Not booked</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'appointment:edit_slot' slot.id %}" class="btn btn-sm btn-secondary">
+                        Edit
+                    </a>
+
+                    <a href="{% url 'appointment:delete_slot' slot.id %}" class="btn btn-sm btn-danger">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">
+    No appointment slots have been added yet.
+</div>
+{% endif %}
+
+<a href="{% url 'appointment:dashboard' %}" class="btn btn-outline-secondary">
+    Back to Dashboard
+</a>
+{% endblock %}
