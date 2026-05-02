@@ -100,6 +100,8 @@ def cancel_appointment(request, appointment_id):
         slot.is_available = True
         slot.save()
 
+        appointment.delete()
+
         messages.success(request, "Your appointment has been cancelled.")
         return redirect("appointment:my_appointments")
 
