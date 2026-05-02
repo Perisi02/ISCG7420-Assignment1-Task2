@@ -83,3 +83,26 @@ def register(request):
     return render(request, "registration/register.html", {
         "form": form
     })
+
+@login_required
+def cancel_appointment(request, appointment_id):
+    appointment = get_object_or_404(
+        Appointment,
+        id=appointment_id,
+        patient=request.user
+    )
+
+    if request.method == "POST":
+        slot = appointment.slot
+        appointment.status = "Cancelled"
+        appointment.save()
+
+        slot.is_available = True
+        slot.save()
+
+        messages.success(request, "Your appointment has been cancelled.")
+        return redirect("appointment:my_appointments")
+
+    return render(request, "appointment/cancel_appointment.html", {
+        "appointment": appointment
+    })
