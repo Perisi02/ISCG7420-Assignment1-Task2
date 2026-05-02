@@ -1,12 +1,16 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Piki Ora Medical Centre</title>
-</head>
-<body>
-    <h1>Piki Ora Medical Centre</h1>
-    <p>Clinic Appointment System</p>
-</body>
-</html>
+{% extends "appointment/base.html" %}
+
+{% block title %}
+    Home | Piki Ora Medical Centre
+{% endblock %}
+
+{% block content %}
+<div class="p-5 mb-4 bg-light rounded-3">
+    <h1 class="display-5 fw-bold">
+        Piki Ora Medical Centre
+    </h1>
+    <p class="fs-4">
+        Book and manage appointments with doctors online.
+    </p>
+</div>
+{% endblock %}
