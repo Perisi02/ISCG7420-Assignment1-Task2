@@ -282,3 +282,31 @@ def manage_appointments(request):
     return render(request, "appointment/manage_appointments.html", {
         "appointments": appointments
     })
+
+@user_passes_test(staff_required)
+def manage_patients(request):
+    patients = User.objects.filter(is_staff=False).order_by("username")
+
+    return render(request, "appointment/manage_patients.html", {
+        "patients": patients
+    })
+
+
+@user_passes_test(staff_required)
+def toggle_patient_active(request, patient_id):
+    patient = get_object_or_404(User, id=patient_id, is_staff=False)
+
+    if request.method == "POST":
+        patient.is_active = not patient.is_active
+        patient.save()
+
+        if patient.is_active:
+            messages.success(request, f"{patient.username}'s account has been activated.")
+        else:
+            messages.success(request, f"{patient.username}'s account has been deactivated.")
+
+        return redirect("appointment:manage_patients")
+
+    return render(request, "appointment/toggle_patient_active.html", {
+        "patient": patient
+    })

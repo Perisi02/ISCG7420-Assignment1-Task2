@@ -1,0 +1,57 @@
+{% extends "appointment/base.html" %}
+
+{% block title %}
+    Update Patient Account | Piki Ora Medical Centre
+{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Update Patient Account</h1>
+
+<div class="alert alert-warning">
+    {% if patient.is_active %}
+        Are you sure you want to deactivate this patient account?
+    {% else %}
+        Are you sure you want to activate this patient account?
+    {% endif %}
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">{{ patient.username }}</h5>
+
+        <p class="mb-1">
+            <strong>Email:</strong>
+            {% if patient.email %}
+                {{ patient.email }}
+            {% else %}
+                <span class="text-muted">No email provided</span>
+            {% endif %}
+        </p>
+
+        <p class="mb-0">
+            <strong>Current status:</strong>
+            {% if patient.is_active %}
+                Active
+            {% else %}
+                Inactive
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+
+    <button type="submit" class="btn btn-warning">
+        {% if patient.is_active %}
+            Yes, deactivate account
+        {% else %}
+            Yes, activate account
+        {% endif %}
+    </button>
+
+    <a href="{% url 'appointment:manage_patients' %}" class="btn btn-secondary">
+        Cancel
+    </a>
+</form>
+{% endblock %}

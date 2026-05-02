@@ -22,4 +22,7 @@ urlpatterns = [
     path("dashboard/slots/<int:slot_id>/edit/", views.edit_slot, name="edit_slot"),
     path("dashboard/slots/<int:slot_id>/delete/", views.delete_slot, name="delete_slot"),
     path("dashboard/appointments/", views.manage_appointments, name="manage_appointments"),
+    path("dashboard/patients/", views.manage_patients, name="manage_patients"),
+    path("dashboard/patients/<int:patient_id>/toggle-active/", views.toggle_patient_active,
+         name="toggle_patient_active"),
 ]

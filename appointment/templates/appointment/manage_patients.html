@@ -1,0 +1,67 @@
+{% extends "appointment/base.html" %}
+
+{% block title %}
+    Manage Patients | Piki Ora Medical Centre
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Manage Patient Accounts</h1>
+
+    <a href="{% url 'appointment:dashboard' %}" class="btn btn-outline-secondary">
+        Back to Dashboard
+    </a>
+</div>
+
+{% if patients %}
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Date Joined</th>
+                <th>Active</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for patient in patients %}
+            <tr>
+                <td>{{ patient.username }}</td>
+                <td>
+                    {% if patient.email %}
+                        {{ patient.email }}
+                    {% else %}
+                        <span class="text-muted">No email provided</span>
+                    {% endif %}
+                </td>
+                <td>{{ patient.date_joined }}</td>
+                <td>
+                    {% if patient.is_active %}
+                        <span class="badge bg-success">Active</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Inactive</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'appointment:toggle_patient_active' patient.id %}" class="btn btn-sm btn-warning">
+                        {% if patient.is_active %}
+                            Deactivate
+                        {% else %}
+                            Activate
+                        {% endif %}
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">
+    No patient accounts have been registered yet.
+</div>
+{% endif %}
+{% endblock %}
