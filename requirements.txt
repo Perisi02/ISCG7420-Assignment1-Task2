@@ -1,4 +1,4 @@
-﻿asgiref==3.11.1
+asgiref==3.11.1
 Django==6.0.3
 et_xmlfile==2.0.0
 numpy==2.4.4
