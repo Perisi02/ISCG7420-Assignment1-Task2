@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login
 from django.contrib import messages
+from django.contrib.auth import login
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
 
 from .models import Doctor, AppointmentSlot, Appointment
 from .forms import AppointmentForm, PatientRegistrationForm
@@ -130,4 +132,21 @@ def edit_appointment(request, appointment_id):
     return render(request, "appointment/edit_appointment.html", {
         "form": form,
         "appointment": appointment
+    })
+
+def staff_required(user):
+    return user.is_authenticated and user.is_staff
+
+@user_passes_test(staff_required)
+def dashboard(request):
+    doctor_count = Doctor.objects.count()
+    slot_count = AppointmentSlot.objects.count()
+    appointment_count = Appointment.objects.count()
+    patient_count = User.objects.filter(is_staff=False).count()
+
+    return render(request, "appointment/dashboard.html", {
+        "doctor_count": doctor_count,
+        "slot_count": slot_count,
+        "appointment_count": appointment_count,
+        "patient_count": patient_count,
     })

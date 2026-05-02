@@ -1,0 +1,72 @@
+{% extends "appointment/base.html" %}
+
+{% block title %}
+    Admin Dashboard | Piki Ora Medical Centre
+{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Custom Admin Dashboard</h1>
+
+<p class="lead">
+    Manage clinic operations from this secure staff dashboard.
+</p>
+
+<div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h5 class="card-title">Doctors</h5>
+                <p class="display-6">{{ doctor_count }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h5 class="card-title">Appointment Slots</h5>
+                <p class="display-6">{{ slot_count }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h5 class="card-title">Bookings</h5>
+                <p class="display-6">{{ appointment_count }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h5 class="card-title">Patients</h5>
+                <p class="display-6">{{ patient_count }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        Management
+    </div>
+
+    <div class="list-group list-group-flush">
+        <a href="#" class="list-group-item list-group-item-action">
+            Manage Doctors
+        </a>
+        <a href="#" class="list-group-item list-group-item-action">
+            Manage Appointment Slots
+        </a>
+        <a href="#" class="list-group-item list-group-item-action">
+            View All Appointments
+        </a>
+        <a href="#" class="list-group-item list-group-item-action">
+            Manage Patient Accounts
+        </a>
+    </div>
+</div>
+{% endblock %}
