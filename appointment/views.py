@@ -108,3 +108,26 @@ def cancel_appointment(request, appointment_id):
     return render(request, "appointment/cancel_appointment.html", {
         "appointment": appointment
     })
+
+@login_required
+def edit_appointment(request, appointment_id):
+    appointment = get_object_or_404(
+        Appointment,
+        id=appointment_id,
+        patient=request.user
+    )
+
+    if request.method == "POST":
+        form = AppointmentForm(request.POST, instance=appointment)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your appointment has been updated.")
+            return redirect("appointment:my_appointments")
+    else:
+        form = AppointmentForm(instance=appointment)
+
+    return render(request, "appointment/edit_appointment.html", {
+        "form": form,
+        "appointment": appointment
+    })

@@ -38,6 +38,10 @@ My Appointments | Piki Ora Medical Centre
             </td>
             <td>
                 {% if appointment.status == "Booked" %}
+                <a href="{% url 'appointment:edit_appointment' appointment.id %}" class="btn btn-sm btn-secondary">
+                    Edit
+                </a>
+
                 <a href="{% url 'appointment:cancel_appointment' appointment.id %}" class="btn btn-sm btn-danger">
                     Cancel
                 </a>
