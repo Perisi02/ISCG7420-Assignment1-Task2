@@ -1,0 +1,52 @@
+{% extends "appointment/base.html" %}
+
+{% block title %}
+    Doctors | Piki Ora Medical Centre
+{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Available Doctors</h1>
+
+{% if doctors %}
+<div class="row">
+    {% for doctor in doctors %}
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Dr {{ doctor.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">
+                    {{ doctor.specialty }}
+                </h6>
+
+                {% if doctor.bio %}
+                <p class="card-text">
+                    {{ doctor.bio }}
+                </p>
+                {% else %}
+                <p class="card-text text-muted">
+                    No bio available.
+                </p>
+                {% endif %}
+
+                {% if doctor.phone %}
+                <p class="mb-1">
+                    <strong>Phone:</strong> {{ doctor.phone }}
+                </p>
+                {% endif %}
+
+                {% if doctor.email %}
+                <p class="mb-0">
+                    <strong>Email:</strong> {{ doctor.email }}
+                </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+    No doctors are currently available.
+</div>
+{% endif %}
+{% endblock %}
