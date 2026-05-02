@@ -19,27 +19,38 @@
         </a>
 
         <div class="navbar-nav ms-auto">
-            <a class="nav-link" href="{% url 'appointment:home' %}">
-                Home
+            <a class="nav-link" href="{% url 'appointment:home' %}">Home</a>
+            <a class="nav-link" href="{% url 'appointment:doctor_list' %}">Doctors</a>
+            <a class="nav-link" href="{% url 'appointment:slot_list' %}">Available Slots</a>
+
+            {% if user.is_authenticated %}
+            <a class="nav-link" href="{% url 'appointment:my_appointments' %}">My Appointments</a>
+
+            <span class="navbar-text text-white ms-3">
+            Hi, {{ user.username }}
+            </span>
+
+            <form method="post" action="{% url 'logout' %}" class="d-inline ms-3">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-light btn-sm">
+                    Logout
+                </button>
+            </form>
+            {% else %}
+            <a class="nav-link" href="{% url 'login' %}">
+                Login
             </a>
-            <a class="nav-link" href="{% url 'appointment:doctor_list' %}">
-                Doctors
-            </a>
-            <a class="nav-link" href="{% url 'appointment:slot_list' %}">
-                Available Slots
-            </a>
-            <a class="nav-link" href="{% url 'appointment:my_appointments' %}">
-                My Appointments
-            </a>
+            {% endif %}
         </div>
+
     </div>
 </nav>
 
 <main class="container mt-4">
 
     {% if messages %}
-        {% for message in messages %}
-            <div class="alert
+    {% for message in messages %}
+    <div class="alert
                 {% if message.tags == 'error' %}
                     alert-danger
                 {% elif message.tags == 'success' %}
@@ -49,11 +60,11 @@
                 {% endif %}
                 alert-dismissible fade show" role="alert">
 
-                {{ message }}
+        {{ message }}
 
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
     {% endif %}
 
     {% block content %}
