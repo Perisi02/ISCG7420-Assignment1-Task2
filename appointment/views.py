@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
 
 from .models import Doctor, AppointmentSlot, Appointment
-from .forms import AppointmentForm, PatientRegistrationForm
+from .forms import AppointmentForm, PatientRegistrationForm, DoctorForm
 
 
 # Create your views here.
@@ -149,4 +149,64 @@ def dashboard(request):
         "slot_count": slot_count,
         "appointment_count": appointment_count,
         "patient_count": patient_count,
+    })
+
+@user_passes_test(staff_required)
+def manage_doctors(request):
+    doctors = Doctor.objects.all().order_by("name")
+
+    return render(request, "appointment/manage_doctors.html", {
+        "doctors": doctors
+    })
+
+
+@user_passes_test(staff_required)
+def add_doctor(request):
+    if request.method == "POST":
+        form = DoctorForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Doctor profile has been added.")
+            return redirect("appointment:manage_doctors")
+    else:
+        form = DoctorForm()
+
+    return render(request, "appointment/doctor_form.html", {
+        "form": form,
+        "title": "Add Doctor"
+    })
+
+
+@user_passes_test(staff_required)
+def edit_doctor(request, doctor_id):
+    doctor = get_object_or_404(Doctor, id=doctor_id)
+
+    if request.method == "POST":
+        form = DoctorForm(request.POST, instance=doctor)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Doctor profile has been updated.")
+            return redirect("appointment:manage_doctors")
+    else:
+        form = DoctorForm(instance=doctor)
+
+    return render(request, "appointment/doctor_form.html", {
+        "form": form,
+        "title": "Edit Doctor"
+    })
+
+
+@user_passes_test(staff_required)
+def delete_doctor(request, doctor_id):
+    doctor = get_object_or_404(Doctor, id=doctor_id)
+
+    if request.method == "POST":
+        doctor.delete()
+        messages.success(request, "Doctor profile has been deleted.")
+        return redirect("appointment:manage_doctors")
+
+    return render(request, "appointment/delete_doctor.html", {
+        "doctor": doctor
     })

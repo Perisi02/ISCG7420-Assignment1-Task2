@@ -13,4 +13,8 @@ urlpatterns = [
     path("appointments/<int:appointment_id>/cancel/", views.cancel_appointment, name="cancel_appointment"),
     path("register/", views.register, name="register"),
     path("dashboard/", views.dashboard, name="dashboard"),
+    path("dashboard/doctors/", views.manage_doctors, name="manage_doctors"),
+    path("dashboard/doctors/add/", views.add_doctor, name="add_doctor"),
+    path("dashboard/doctors/<int:doctor_id>/edit/", views.edit_doctor, name="edit_doctor"),
+    path("dashboard/doctors/<int:doctor_id>/delete/", views.delete_doctor, name="delete_doctor"),
 ]
