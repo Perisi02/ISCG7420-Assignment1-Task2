@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login
 from django.contrib import messages
 
 from .models import Doctor, AppointmentSlot, Appointment
-from .forms import AppointmentForm
+from .forms import AppointmentForm, PatientRegistrationForm
 
 
 # Create your views here.
@@ -17,7 +18,10 @@ def doctor_list(request):
 
 
 def slot_list(request):
-    slots = AppointmentSlot.objects.filter(is_available=True).select_related("doctor").order_by("date", "start_time")
+    slots = AppointmentSlot.objects.filter(
+        is_available=True,
+        appointment__isnull=True
+    ).select_related("doctor").order_by("date", "start_time")
 
     return render(request, "appointment/slot_list.html", {"slots": slots})
 
@@ -61,4 +65,21 @@ def my_appointments(request):
 
     return render(request, "appointment/my_appointments.html", {
         "appointments": appointments
+    })
+
+
+def register(request):
+    if request.method == "POST":
+        form = PatientRegistrationForm(request.POST)
+
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, "Registration successful. You are now logged in.")
+            return redirect("appointment:home")
+    else:
+        form = PatientRegistrationForm()
+
+    return render(request, "registration/register.html", {
+        "form": form
     })
