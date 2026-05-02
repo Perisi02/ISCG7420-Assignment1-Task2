@@ -21,4 +21,5 @@ urlpatterns = [
     path("dashboard/slots/add/", views.add_slot, name="add_slot"),
     path("dashboard/slots/<int:slot_id>/edit/", views.edit_slot, name="edit_slot"),
     path("dashboard/slots/<int:slot_id>/delete/", views.delete_slot, name="delete_slot"),
+    path("dashboard/appointments/", views.manage_appointments, name="manage_appointments"),
 ]

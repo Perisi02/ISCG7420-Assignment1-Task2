@@ -270,3 +270,15 @@ def delete_slot(request, slot_id):
     return render(request, "appointment/delete_slot.html", {
         "slot": slot
     })
+
+@user_passes_test(staff_required)
+def manage_appointments(request):
+    appointments = Appointment.objects.select_related(
+        "patient",
+        "slot",
+        "slot__doctor"
+    ).order_by("slot__date", "slot__start_time")
+
+    return render(request, "appointment/manage_appointments.html", {
+        "appointments": appointments
+    })
