@@ -28,11 +28,34 @@
             <a class="nav-link" href="{% url 'appointment:slot_list' %}">
                 Available Slots
             </a>
+            <a class="nav-link" href="{% url 'appointment:my_appointments' %}">
+                My Appointments
+            </a>
         </div>
     </div>
 </nav>
 
 <main class="container mt-4">
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert
+                {% if message.tags == 'error' %}
+                    alert-danger
+                {% elif message.tags == 'success' %}
+                    alert-success
+                {% else %}
+                    alert-info
+                {% endif %}
+                alert-dismissible fade show" role="alert">
+
+                {{ message }}
+
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     {% block content %}
     {% endblock %}
 </main>

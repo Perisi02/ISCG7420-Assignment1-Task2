@@ -1,0 +1,37 @@
+{% extends "appointment/base.html" %}
+
+{% block title %}
+    Book Appointment | Piki Ora Medical Centre
+{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Book Appointment</h1>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Dr {{ slot.doctor.name }}</h5>
+        <p class="mb-1"><strong>Specialty:</strong> {{ slot.doctor.specialty }}</p>
+        <p class="mb-1"><strong>Date:</strong> {{ slot.date }}</p>
+        <p class="mb-0"><strong>Time:</strong> {{ slot.start_time }} - {{ slot.end_time }}</p>
+    </div>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label for="{{ form.reason.id_for_label }}" class="form-label">
+            Reason for appointment
+        </label>
+        {{ form.reason }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Confirm Booking
+    </button>
+
+    <a href="{% url 'appointment:slot_list' %}" class="btn btn-secondary">
+        Cancel
+    </a>
+</form>
+{% endblock %}
