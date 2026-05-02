@@ -25,4 +25,8 @@ urlpatterns = [
     path("dashboard/patients/", views.manage_patients, name="manage_patients"),
     path("dashboard/patients/<int:patient_id>/toggle-active/", views.toggle_patient_active,
          name="toggle_patient_active"),
+    path("dashboard/appointments/<int:appointment_id>/edit/", views.admin_edit_appointment,
+         name="admin_edit_appointment"),
+    path("dashboard/appointments/<int:appointment_id>/cancel/", views.admin_cancel_appointment,
+         name="admin_cancel_appointment"),
 ]

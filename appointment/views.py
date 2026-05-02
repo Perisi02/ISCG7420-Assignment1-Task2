@@ -310,3 +310,41 @@ def toggle_patient_active(request, patient_id):
     return render(request, "appointment/toggle_patient_active.html", {
         "patient": patient
     })
+
+@user_passes_test(staff_required)
+def admin_edit_appointment(request, appointment_id):
+    appointment = get_object_or_404(Appointment, id=appointment_id)
+
+    if request.method == "POST":
+        form = AppointmentForm(request.POST, instance=appointment)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Appointment has been updated.")
+            return redirect("appointment:manage_appointments")
+    else:
+        form = AppointmentForm(instance=appointment)
+
+    return render(request, "appointment/admin_edit_appointment.html", {
+        "form": form,
+        "appointment": appointment
+    })
+
+@user_passes_test(staff_required)
+def admin_cancel_appointment(request, appointment_id):
+    appointment = get_object_or_404(Appointment, id=appointment_id)
+
+    if request.method == "POST":
+        slot = appointment.slot
+
+        slot.is_available = True
+        slot.save()
+
+        appointment.delete()
+
+        messages.success(request, "Appointment has been cancelled.")
+        return redirect("appointment:manage_appointments")
+
+    return render(request, "appointment/admin_cancel_appointment.html", {
+        "appointment": appointment
+    })

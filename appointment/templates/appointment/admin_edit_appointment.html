@@ -1,0 +1,39 @@
+{% extends "appointment/base.html" %}
+
+{% block title %}
+    Edit Appointment | Piki Ora Medical Centre
+{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Edit Patient Appointment</h1>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">{{ appointment.patient.username }}</h5>
+        <p class="mb-1"><strong>Doctor:</strong> Dr {{ appointment.slot.doctor.name }}</p>
+        <p class="mb-1"><strong>Specialty:</strong> {{ appointment.slot.doctor.specialty }}</p>
+        <p class="mb-1"><strong>Date:</strong> {{ appointment.slot.date }}</p>
+        <p class="mb-0"><strong>Time:</strong> {{ appointment.slot.start_time }} - {{ appointment.slot.end_time }}</p>
+    </div>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label for="{{ form.reason.id_for_label }}" class="form-label">
+            Reason for appointment
+        </label>
+        {{ form.reason }}
+        {{ form.reason.errors }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Save Changes
+    </button>
+
+    <a href="{% url 'appointment:manage_appointments' %}" class="btn btn-secondary">
+        Cancel
+    </a>
+</form>
+{% endblock %}

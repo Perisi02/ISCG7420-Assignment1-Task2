@@ -1,0 +1,41 @@
+{% extends "appointment/base.html" %}
+
+{% block title %}
+    Cancel Appointment | Piki Ora Medical Centre
+{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Cancel Patient Appointment</h1>
+
+<div class="alert alert-warning">
+    Are you sure you want to cancel this patient appointment?
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">{{ appointment.patient.username }}</h5>
+        <p class="mb-1"><strong>Doctor:</strong> Dr {{ appointment.slot.doctor.name }}</p>
+        <p class="mb-1"><strong>Specialty:</strong> {{ appointment.slot.doctor.specialty }}</p>
+        <p class="mb-1"><strong>Date:</strong> {{ appointment.slot.date }}</p>
+        <p class="mb-1"><strong>Time:</strong> {{ appointment.slot.start_time }} - {{ appointment.slot.end_time }}</p>
+
+        {% if appointment.reason %}
+            <p class="mb-0"><strong>Reason:</strong> {{ appointment.reason }}</p>
+        {% else %}
+            <p class="mb-0 text-muted">No reason provided.</p>
+        {% endif %}
+    </div>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+
+    <button type="submit" class="btn btn-danger">
+        Yes, cancel appointment
+    </button>
+
+    <a href="{% url 'appointment:manage_appointments' %}" class="btn btn-secondary">
+        Keep appointment
+    </a>
+</form>
+{% endblock %}
